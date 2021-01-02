@@ -6,9 +6,10 @@
 package de.neemann.digital.core.element;
 
 import de.neemann.digital.draw.elements.Circuit;
+import de.neemann.digital.draw.elements.VisualElement;
 import de.neemann.digital.draw.library.ElementLibrary;
 
 public interface InsightFactory {
 
-    Circuit createInsight(ElementAttributes attr, ElementLibrary library);
+    Circuit createInsight(VisualElement ve, ElementLibrary library);
 }

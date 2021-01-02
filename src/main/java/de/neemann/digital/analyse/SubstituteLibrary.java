@@ -55,9 +55,9 @@ public class SubstituteLibrary implements LibraryInterface {
     }
 
     public static InsightFactory createInsightFactory(Class<? extends Element> clazz) {
-        return (attr, library) -> {
+        return (ve, library) -> {
             try {
-                return new SubstituteLibrary(library).createCircuit(clazz.getSimpleName(), attr);
+                return new SubstituteLibrary(library).createCircuit(clazz.getSimpleName(), ve.getElementAttributes());
             } catch (ElementNotFoundException e) {
                 return null;
             }

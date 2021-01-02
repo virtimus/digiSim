@@ -1162,10 +1162,10 @@ public class CircuitComponent extends JComponent implements ChangedListener, Lib
                 } else {
                     InsightFactory insightFactory = elementType.getInsightFactory();
                     if (insightFactory != null) {
-                        attributeDialog.addButton(Lang.get("attr_lookInsideLabel"), new ToolTipAction(Lang.get("attr_lookInside")) {
+                        attributeDialog.addButton(Lang.get("attr_lookInsideLabel"), new ToolTipAction(Lang.get("attr_openCircuit")) {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                Circuit circuit = insightFactory.createInsight(element.getElementAttributes(), library);
+                                Circuit circuit = insightFactory.createInsight(element, library);
                                 if (circuit != null) {
                                     attributeDialog.dispose();
                                     new Main.MainBuilder()
@@ -1176,7 +1176,7 @@ public class CircuitComponent extends JComponent implements ChangedListener, Lib
                                             .keepPrefMainFile()
                                             .openLater();
                                 } else
-                                    new ErrorMessage(Lang.get("notAvailable")).show(CircuitComponent.this);
+                                    new ErrorMessage(Lang.get("insightNotAvailable")).show(CircuitComponent.this);
                             }
                         }.setToolTip(Lang.get("attr_lookInside_tt")));
                     }

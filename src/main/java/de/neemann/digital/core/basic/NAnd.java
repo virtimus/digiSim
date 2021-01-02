@@ -21,7 +21,9 @@ public class NAnd extends And {
     /**
      * The NAnd description
      */
-    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(NAnd.class).addAttribute(Keys.WIDE_SHAPE);
+    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(NAnd.class)
+            .setInsightFactory(AnalyzerInsight.INSTANCE)
+            .addAttribute(Keys.WIDE_SHAPE);
 
     /**
      * Creates a new instance

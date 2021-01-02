@@ -21,7 +21,9 @@ public class NOr extends Or {
     /**
      * The NOr description
      */
-    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(NOr.class).addAttribute(Keys.WIDE_SHAPE);
+    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(NOr.class)
+            .setInsightFactory(AnalyzerInsight.INSTANCE)
+            .addAttribute(Keys.WIDE_SHAPE);
 
     /**
      * Creates a new instance

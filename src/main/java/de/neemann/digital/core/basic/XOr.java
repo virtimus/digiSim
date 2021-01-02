@@ -21,7 +21,9 @@ public class XOr extends Function {
     /**
      * The And description
      */
-    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(XOr.class).addAttribute(Keys.WIDE_SHAPE);
+    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(XOr.class)
+            .setInsightFactory(AnalyzerInsight.INSTANCE)
+            .addAttribute(Keys.WIDE_SHAPE);
 
     /**
      * Creates a new instance

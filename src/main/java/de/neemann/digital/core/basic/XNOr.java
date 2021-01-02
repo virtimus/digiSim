@@ -21,7 +21,9 @@ public class XNOr extends XOr {
     /**
      * The XNOr description
      */
-    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(XNOr.class).addAttribute(Keys.WIDE_SHAPE);
+    public static final ElementTypeDescription DESCRIPTION = new FanInDescription(XNOr.class)
+            .setInsightFactory(AnalyzerInsight.INSTANCE)
+            .addAttribute(Keys.WIDE_SHAPE);
 
     /**
      * Creates a new instance

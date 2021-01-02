@@ -5,8 +5,12 @@
  */
 package de.neemann.digital.core.memory;
 
+import de.neemann.digital.analyse.SubstituteLibrary;
 import de.neemann.digital.core.*;
 import de.neemann.digital.core.element.*;
+import de.neemann.digital.draw.elements.Circuit;
+import de.neemann.digital.draw.library.ElementLibrary;
+import de.neemann.digital.draw.library.ElementNotFoundException;
 
 import static de.neemann.digital.core.ObservableValues.ovs;
 import static de.neemann.digital.core.element.PinInfo.input;
@@ -27,6 +31,7 @@ public class Counter extends Node implements Element, ProgramCounter {
             .addAttribute(Keys.LABEL)
             .addAttribute(Keys.VALUE_IS_PROBE)
             .addAttribute(Keys.IS_PROGRAM_COUNTER)
+            .setInsightFactory(SubstituteLibrary.createInsightFactory(Counter.class))
             .supportsHDL();
 
     private final ObservableValue out;

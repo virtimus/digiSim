@@ -1159,6 +1159,27 @@ public class CircuitComponent extends JComponent implements ChangedListener, Lib
                                     .openLater();
                         }
                     }.setToolTip(Lang.get("attr_openCircuit_tt")));
+                } else {
+                    InsightFactory insightFactory = elementType.getInsightFactory();
+                    if (insightFactory != null) {
+                        attributeDialog.addButton(Lang.get("attr_lookInsideLabel"), new ToolTipAction(Lang.get("attr_lookInside")) {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                Circuit circuit = insightFactory.createInsight(element.getElementAttributes(), library);
+                                if (circuit != null) {
+                                    attributeDialog.dispose();
+                                    new Main.MainBuilder()
+                                            .setParent(parent)
+                                            .setCircuit(circuit)
+                                            .setLibrary(library)
+                                            .denyMostFileActions()
+                                            .keepPrefMainFile()
+                                            .openLater();
+                                } else
+                                    new ErrorMessage(Lang.get("notAvailable")).show(CircuitComponent.this);
+                            }
+                        }.setToolTip(Lang.get("attr_lookInside_tt")));
+                    }
                 }
                 if (elementType == GenericInitCode.DESCRIPTION && getCircuit().getAttributes().get(Keys.IS_GENERIC)) {
                     attributeDialog.addButton(Lang.get("attr_createConcreteCircuitLabel"), new ToolTipAction(Lang.get("attr_createConcreteCircuit")) {

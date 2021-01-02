@@ -27,6 +27,7 @@ public class ElementTypeDescription {
     private final PinDescriptions inputPins;
     private final ArrayList<Key> attributeList;
     private boolean supportsHDL;
+    private InsightFactory insightFactory;
 
     /**
      * Creates a new ElementTypeDescription
@@ -166,6 +167,15 @@ public class ElementTypeDescription {
     public ElementTypeDescription supportsHDL() {
         supportsHDL = true;
         return this;
+    }
+
+    public ElementTypeDescription setInsightFactory(InsightFactory insightFactory) {
+        this.insightFactory = insightFactory;
+        return this;
+    }
+
+    public InsightFactory getInsightFactory() {
+        return insightFactory;
     }
 
     /**

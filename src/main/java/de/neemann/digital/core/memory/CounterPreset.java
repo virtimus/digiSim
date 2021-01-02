@@ -5,6 +5,7 @@
  */
 package de.neemann.digital.core.memory;
 
+import de.neemann.digital.analyse.SubstituteLibrary;
 import de.neemann.digital.core.*;
 import de.neemann.digital.core.element.Element;
 import de.neemann.digital.core.element.ElementAttributes;
@@ -37,6 +38,7 @@ public class CounterPreset extends Node implements Element, ProgramCounter {
             .addAttribute(Keys.LABEL)
             .addAttribute(Keys.VALUE_IS_PROBE)
             .addAttribute(Keys.IS_PROGRAM_COUNTER)
+            .setInsightFactory(SubstituteLibrary.createInsightFactory(CounterPreset.class))
             .supportsHDL();
 
     private final ObservableValue out;

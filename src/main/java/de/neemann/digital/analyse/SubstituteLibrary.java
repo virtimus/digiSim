@@ -5,10 +5,7 @@
  */
 package de.neemann.digital.analyse;
 
-import de.neemann.digital.core.element.ElementAttributes;
-import de.neemann.digital.core.element.ElementTypeDescription;
-import de.neemann.digital.core.element.Key;
-import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.core.element.*;
 import de.neemann.digital.draw.elements.Circuit;
 import de.neemann.digital.draw.elements.PinException;
 import de.neemann.digital.draw.elements.VisualElement;
@@ -57,6 +54,27 @@ public class SubstituteLibrary implements LibraryInterface {
         this.parent = parent;
     }
 
+    public static InsightFactory createInsightFactory(Class<? extends Element> clazz) {
+        return (attr, library) -> {
+            try {
+                return new SubstituteLibrary(library).createCircuit(clazz.getSimpleName(), attr);
+            } catch (ElementNotFoundException e) {
+                return null;
+            }
+        };
+    }
+
+    private Circuit createCircuit(String elementName, ElementAttributes attr) throws ElementNotFoundException {
+        SubstituteInterface subst = MAP.get(elementName);
+        if (subst == null)
+            return null;
+        try {
+            return subst.createCircuit(attr, parent);
+        } catch (IOException e) {
+            throw new ElementNotFoundException(Lang.get("err_substitutingError"), e);
+        }
+    }
+
     @Override
     public ElementTypeDescription getElementType(String elementName, ElementAttributes attr) throws ElementNotFoundException {
         SubstituteInterface subst = MAP.get(elementName);
@@ -74,6 +92,8 @@ public class SubstituteLibrary implements LibraryInterface {
 
     private interface SubstituteInterface {
         ElementTypeDescription getElementType(ElementAttributes attr, ElementLibrary library) throws PinException, IOException;
+
+        Circuit createCircuit(ElementAttributes attr, ElementLibrary library) throws IOException;
     }
 
     private static final class SubstituteMatching implements SubstituteInterface {
@@ -86,6 +106,16 @@ public class SubstituteLibrary implements LibraryInterface {
         private SubstituteMatching add(Accept accept, SubstituteInterface substituteInterface) {
             matcher.add(new Matcher(accept, substituteInterface));
             return this;
+        }
+
+        @Override
+        public Circuit createCircuit(ElementAttributes attr, ElementLibrary library) throws IOException {
+            for (Matcher m : matcher) {
+                Circuit circuit = m.createCircuit(attr, library);
+                if (circuit != null)
+                    return circuit;
+            }
+            return null;
         }
 
         @Override
@@ -106,6 +136,13 @@ public class SubstituteLibrary implements LibraryInterface {
         private Matcher(Accept accept, SubstituteInterface substituteInterface) {
             this.accept = accept;
             this.substituteInterface = substituteInterface;
+        }
+
+        @Override
+        public Circuit createCircuit(ElementAttributes attr, ElementLibrary library) throws IOException {
+            if (accept.accept(attr))
+                return substituteInterface.createCircuit(attr, library);
+            return null;
         }
 
         @Override
@@ -130,6 +167,13 @@ public class SubstituteLibrary implements LibraryInterface {
 
         @Override
         public ElementTypeDescription getElementType(ElementAttributes attr, ElementLibrary library) throws PinException, IOException {
+            Circuit c = createCircuit(attr, library);
+
+            return ElementLibrary.createCustomDescription(new File(filename), c).isSubstitutedBuiltIn();
+        }
+
+        @Override
+        public Circuit createCircuit(ElementAttributes attr, ElementLibrary library) throws IOException {
             if (circuit == null) {
                 LOGGER.debug("load substitute circuit " + filename);
                 InputStream in = getClass().getClassLoader().getResourceAsStream("analyser/" + filename);
@@ -143,8 +187,7 @@ public class SubstituteLibrary implements LibraryInterface {
             // disable the normal generic handling!
             c.getAttributes().set(Keys.IS_GENERIC, false);
             generify(attr, c);
-
-            return ElementLibrary.createCustomDescription(new File(filename), c).isSubstitutedBuiltIn();
+            return c;
         }
 
         private void generify(ElementAttributes attr, Circuit circuit) throws IOException {

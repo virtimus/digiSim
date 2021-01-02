@@ -5,6 +5,7 @@
  */
 package de.neemann.digital.core.memory;
 
+import de.neemann.digital.analyse.SubstituteLibrary;
 import de.neemann.digital.core.*;
 import de.neemann.digital.core.element.Element;
 import de.neemann.digital.core.element.ElementAttributes;
@@ -30,6 +31,7 @@ public class Register extends Node implements Element, Countable, ProgramCounter
             .addAttribute(Keys.INVERTER_CONFIG)
             .addAttribute(Keys.IS_PROGRAM_COUNTER)
             .addAttribute(Keys.VALUE_IS_PROBE)
+            .setInsightFactory(SubstituteLibrary.createInsightFactory(Register.class))
             .supportsHDL();
 
     private final int bits;

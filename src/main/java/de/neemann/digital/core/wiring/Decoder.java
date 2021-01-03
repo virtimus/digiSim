@@ -14,6 +14,7 @@ import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.stats.Countable;
+import de.neemann.digital.insight.InsightSimple;
 import de.neemann.digital.lang.Lang;
 
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class Decoder extends Node implements Element, Countable {
             .addAttribute(Keys.ROTATE)
             .addAttribute(Keys.SELECTOR_BITS)
             .addAttribute(Keys.FLIP_SEL_POSITON)
+            .setInsightFactory(new InsightSimple()
+                    .add("Decoder1.dig", attr -> attr.getBits() == 1 && attr.get(Keys.SELECTOR_BITS) == 1)
+                    .add("Decoder2.dig", attr -> attr.getBits() == 1 && attr.get(Keys.SELECTOR_BITS) == 2))
             .supportsHDL();
 
     /**

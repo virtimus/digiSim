@@ -11,6 +11,7 @@ import de.neemann.digital.core.ObservableValue;
 import de.neemann.digital.core.ObservableValues;
 import de.neemann.digital.core.basic.FanIn;
 import de.neemann.digital.core.element.*;
+import de.neemann.digital.insight.InsightSimple;
 import de.neemann.digital.lang.Lang;
 
 import static de.neemann.digital.core.element.PinInfo.input;
@@ -42,6 +43,9 @@ public class Multiplexer extends FanIn {
             .addAttribute(Keys.BITS)
             .addAttribute(Keys.SELECTOR_BITS)
             .addAttribute(Keys.FLIP_SEL_POSITON)
+            .setInsightFactory(new InsightSimple()
+                    .add("Mux1.dig", attr -> attr.getBits() == 1 && attr.get(Keys.SELECTOR_BITS) == 1)
+                    .add("Mux2.dig", attr -> attr.getBits() == 1 && attr.get(Keys.SELECTOR_BITS) == 2))
             .supportsHDL();
 
     /**

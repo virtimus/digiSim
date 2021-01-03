@@ -14,6 +14,7 @@ import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.stats.Countable;
+import de.neemann.digital.insight.InsightSimple;
 import de.neemann.digital.lang.Lang;
 
 import java.util.ArrayList;
@@ -47,6 +48,9 @@ public class Demultiplexer extends Node implements Element, Countable {
             .addAttribute(Keys.SELECTOR_BITS)
             .addAttribute(Keys.FLIP_SEL_POSITON)
             .addAttribute(Keys.DEFAULT)
+            .setInsightFactory(new InsightSimple()
+                    .add("Demux1.dig", attr -> attr.getBits() == 1 && attr.get(Keys.SELECTOR_BITS) == 1)
+                    .add("Demux2.dig", attr -> attr.getBits() == 1 && attr.get(Keys.SELECTOR_BITS) == 2))
             .supportsHDL();
 
     /**

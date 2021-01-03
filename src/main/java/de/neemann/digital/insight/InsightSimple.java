@@ -154,10 +154,10 @@ public class InsightSimple implements InsightFactory {
         /**
          * Condition for a visual element
          *
-         * @param ve the visual element
-         * @return true if the visual element mets the condition
+         * @param attr the visual elements attributes
+         * @return true if the visual element meets the condition
          */
-        boolean isMet(ElementAttributes ve);
+        boolean isMet(ElementAttributes attr);
     }
 
     private static final class Entry {

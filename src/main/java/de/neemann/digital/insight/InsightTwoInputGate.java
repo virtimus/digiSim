@@ -7,7 +7,6 @@ package de.neemann.digital.insight;
 
 import de.neemann.digital.core.*;
 import de.neemann.digital.core.element.*;
-import de.neemann.digital.core.io.In;
 import de.neemann.digital.draw.elements.Circuit;
 import de.neemann.digital.draw.elements.PinException;
 import de.neemann.digital.draw.elements.VisualElement;
@@ -17,7 +16,6 @@ import de.neemann.digital.draw.model.InverterConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * Insight factory used to create insights for two input combinatorial gates.
@@ -28,22 +26,22 @@ public final class InsightTwoInputGate implements InsightFactory {
      */
     public static final InsightFactory INSTANCE = new InsightTwoInputGate();
 
-    private static final NameEntry[] NAMES = new NameEntry[]{
+    private static final String[] NAMES = new String[]{
             null,
-            new NameEntry("ins5.dig", false),
-            new NameEntry("ins6.dig", false),
+            "ins5.dig",
+            "ins6.dig",
             null,
-            new NameEntry("ins6.dig", true),
+            "ins9.dig",
             null,
-            new NameEntry("ins7.dig", false),
-            new NameEntry("ins1.dig", false),
-            new NameEntry("ins2.dig", false),
-            new NameEntry("ins8.dig", false),
+            "ins7.dig",
+            "ins1.dig",
+            "ins2.dig",
+            "ins8.dig",
             null,
-            new NameEntry("ins3.dig", false),
+            "ins3.dig",
             null,
-            new NameEntry("ins3.dig", true),
-            new NameEntry("ins4.dig", false),
+            "ins10.dig",
+            "ins4.dig",
             null,
     };
 
@@ -93,28 +91,15 @@ public final class InsightTwoInputGate implements InsightFactory {
             }
 
 
-            NameEntry ne = NAMES[index];
-            if (ne == null)
+            String name = NAMES[index];
+            if (name == null)
                 return null;
 
-            InputStream in = ClassLoader.getSystemResourceAsStream("insight/twoInputs/" + ne.getName());
-            Circuit circuit = Circuit.loadCircuit(in, library.getShapeFactory());
-
-            if (ne.getSwapInputs())
-                swapInputs(circuit);
-
-            return circuit;
+            InputStream in = ClassLoader.getSystemResourceAsStream("insight/twoInputs/" + name);
+            return Circuit.loadCircuit(in, library.getShapeFactory());
         } catch (ElementNotFoundException | NodeException | PinException | IOException e) {
             return null;
         }
-    }
-
-    private static void swapInputs(Circuit c) {
-        List<VisualElement> list = c.getElements(v -> v.equalsDescription(In.DESCRIPTION));
-        String l1 = list.get(0).getElementAttributes().getLabel();
-        String l2 = list.get(1).getElementAttributes().getLabel();
-        list.get(0).getElementAttributes().set(Keys.LABEL, l2);
-        list.get(1).getElementAttributes().set(Keys.LABEL, l1);
     }
 
     private long invert(ObservableValue in, InverterConfig ic, int val) {
@@ -122,24 +107,6 @@ public final class InsightTwoInputGate implements InsightFactory {
         if (ic.contains(in.getName()))
             return 1 - val;
         return val;
-    }
-
-    static final class NameEntry {
-        private final String name;
-        private final boolean swapInputs;
-
-        NameEntry(String name, boolean swapInputs) {
-            this.name = name;
-            this.swapInputs = swapInputs;
-        }
-
-        public boolean getSwapInputs() {
-            return swapInputs;
-        }
-
-        public String getName() {
-            return name;
-        }
     }
 
 }

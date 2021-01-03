@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class InsightTwoInputGateTest extends TestCase {
 
     public void testValidity() throws Exception {
-        InsightTwoInputGate.NameEntry[] list = new InsightTwoInputGate.NameEntry[16];
+        String[] list = new String[16];
 
         ElementLibrary lib = new ElementLibrary();
         ShapeFactory sf = new ShapeFactory(lib);
@@ -40,17 +40,14 @@ public class InsightTwoInputGateTest extends TestCase {
             Circuit c = Circuit.loadCircuit(f, sf);
             int index = createTable(lib, c);
 
-            list[index] = new InsightTwoInputGate.NameEntry(f.getName(), false);
-            int center = (index >> 1) & 3;
-            if (!(center == 0 || center == 3))
-                list[index ^ 6] = new InsightTwoInputGate.NameEntry(f.getName(), true);
+            list[index] = f.getName();
         }
 
         for (int i = 0; i < 16; i++) {
             if (list[i] == null)
                 System.out.println("null,");
             else
-                System.out.println("new NameEntry(\"" + list[i].getName() + "\"," + list[i].getSwapInputs() + "),");
+                System.out.println("\"" + list[i] + "\",");
         }
 
     }

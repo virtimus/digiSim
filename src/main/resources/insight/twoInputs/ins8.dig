@@ -14,7 +14,7 @@
       <elementAttributes>
         <entry>
           <string>Label</string>
-          <string>in_1</string>
+          <string>In_1</string>
         </entry>
       </elementAttributes>
       <pos x="420" y="220"/>
@@ -24,7 +24,7 @@
       <elementAttributes>
         <entry>
           <string>Label</string>
-          <string>in_2</string>
+          <string>In_2</string>
         </entry>
       </elementAttributes>
       <pos x="240" y="300"/>

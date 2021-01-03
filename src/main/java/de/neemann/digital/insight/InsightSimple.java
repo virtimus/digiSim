@@ -6,6 +6,7 @@
 package de.neemann.digital.insight;
 
 import de.neemann.digital.core.basic.Not;
+import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.io.In;
 import de.neemann.digital.core.wiring.Clock;
@@ -32,7 +33,7 @@ public class InsightSimple implements InsightFactory {
     /**
      * True if there is one data bit
      */
-    public static final Condition ONEBIT = ve -> ve.getElementAttributes().getBits() == 1;
+    public static final Condition ONEBIT = attr -> attr.getBits() == 1;
 
     /**
      * A AND condition
@@ -73,16 +74,38 @@ public class InsightSimple implements InsightFactory {
     /**
      * Adds a circuit
      *
+     * @param factory   the factory th creatre the circuit
+     * @param condition the condition to use this circuit
+     * @return this for chained calls
+     */
+    public InsightSimple add(InsightFactory factory, Condition condition) {
+        if (unconditional)
+            throw new RuntimeException("there is already a unconditional circuit");
+        entries.add(new Entry(factory, condition));
+        if (condition == null)
+            unconditional = true;
+        return this;
+    }
+
+    /**
+     * Adds a unconditional factory
+     *
+     * @param factory the factory to create a circuit
+     * @return this for chained calls
+     */
+    public InsightSimple add(InsightFactory factory) {
+        return add(factory, null);
+    }
+
+    /**
+     * Adds a circuit
+     *
      * @param name      the name of the circuit
      * @param condition the condition to use this circuit
      * @return this for chained calls
      */
     public InsightSimple add(String name, Condition condition) {
-        if (unconditional)
-            throw new RuntimeException("there is already a unconditional circuit");
-        entries.add(new Entry(name, condition));
-        if (condition == null)
-            unconditional = true;
+        add(new InsightFactoryLoad(name), condition);
         return this;
     }
 
@@ -99,19 +122,12 @@ public class InsightSimple implements InsightFactory {
     @Override
     public Circuit createInsight(VisualElement ve, ElementLibrary library) {
         for (Entry entry : entries)
-            if (entry.isMet(ve)) {
-                InputStream in = ClassLoader.getSystemResourceAsStream("insight/simple/" + entry.name);
-                try {
-                    return invertInputs(Circuit.loadCircuit(in, library.getShapeFactory()), ve.getElementAttributes().get(Keys.INVERTER_CONFIG), library.getShapeFactory());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
+            if (entry.isMet(ve))
+                return entry.factory.createInsight(ve, library);
         return null;
     }
 
-    private Circuit invertInputs(Circuit circuit, InverterConfig ic, ShapeFactory shapeFactory) {
+    private static Circuit invertInputs(Circuit circuit, InverterConfig ic, ShapeFactory shapeFactory) {
         List<VisualElement> list = circuit.getElements(v -> v.equalsDescription(In.DESCRIPTION) || v.equalsDescription(Clock.DESCRIPTION));
         for (VisualElement in : list) {
             String label = in.getElementAttributes().getLabel();
@@ -121,7 +137,7 @@ public class InsightSimple implements InsightFactory {
         return circuit;
     }
 
-    private void addInverter(VisualElement in, Circuit circuit, ShapeFactory shapeFactory) {
+    private static void addInverter(VisualElement in, Circuit circuit, ShapeFactory shapeFactory) {
         Vector pos = in.getPos();
         in.setPos(new Vector(pos.x - SIZE * 3, pos.y));
         circuit.add(new VisualElement(Not.DESCRIPTION.getName())
@@ -141,15 +157,15 @@ public class InsightSimple implements InsightFactory {
          * @param ve the visual element
          * @return true if the visual element mets the condition
          */
-        boolean isMet(VisualElement ve);
+        boolean isMet(ElementAttributes ve);
     }
 
     private static final class Entry {
-        private final String name;
         private final Condition condition;
+        private final InsightFactory factory;
 
-        private Entry(String name, Condition condition) {
-            this.name = name;
+        private Entry(InsightFactory factory, Condition condition) {
+            this.factory = factory;
             this.condition = condition;
         }
 
@@ -157,7 +173,28 @@ public class InsightSimple implements InsightFactory {
             if (condition == null)
                 return true;
             else
-                return condition.isMet(ve);
+                return condition.isMet(ve.getElementAttributes());
+        }
+    }
+
+    private static final class InsightFactoryLoad implements InsightFactory {
+        private final String name;
+
+        private InsightFactoryLoad(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public Circuit createInsight(VisualElement ve, ElementLibrary library) {
+            InputStream in = ClassLoader.getSystemResourceAsStream("insight/simple/" + name);
+            if (in == null)
+                throw new NullPointerException("file " + name + " not found!");
+            try {
+                return invertInputs(Circuit.loadCircuit(in, library.getShapeFactory()), ve.getElementAttributes().get(Keys.INVERTER_CONFIG), library.getShapeFactory());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 }

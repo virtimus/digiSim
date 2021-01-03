@@ -10,6 +10,7 @@ import de.neemann.digital.core.ObservableValue;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.insight.InsightSimple;
 import de.neemann.digital.insight.InsightTwoInputGate;
 
 import java.util.ArrayList;
@@ -23,7 +24,9 @@ public class And extends Function {
      * The And description
      */
     public static final ElementTypeDescription DESCRIPTION = new FanInDescription(And.class)
-            .setInsightFactory(InsightTwoInputGate.INSTANCE)
+            .setInsightFactory(new InsightSimple()
+                    .add("And3.dig", attr -> attr.getBits() == 1 && attr.get(Keys.INPUT_COUNT) == 3)
+                    .add(InsightTwoInputGate.INSTANCE))
             .addAttribute(Keys.WIDE_SHAPE);
 
     /**

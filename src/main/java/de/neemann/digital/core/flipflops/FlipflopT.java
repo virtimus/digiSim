@@ -42,8 +42,8 @@ public class FlipflopT extends FlipflopBit {
             .addAttribute(Keys.DEFAULT)
             .addAttribute(Keys.INVERTER_CONFIG)
             .addAttribute(Keys.VALUE_IS_PROBE)
-            .setInsightFactory(new InsightSimple().add("T-ff-en.dig", ve -> ve.getElementAttributes().get(Keys.WITH_ENABLE))
-                    .add("T-ff.dig", ve -> !ve.getElementAttributes().get(Keys.WITH_ENABLE)));
+            .setInsightFactory(new InsightSimple().add("T-ff-en.dig", attr -> attr.get(Keys.WITH_ENABLE))
+                    .add("T-ff.dig", attr -> !attr.get(Keys.WITH_ENABLE)));
 
     private final boolean isEnable;
 

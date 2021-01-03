@@ -64,8 +64,8 @@ public class InsightTwoInputGateTest extends TestCase {
 
         ArrayList<Signal> inputs = ma.getInputs();
         assertEquals(2, inputs.size());
-        assertEquals("in_1", inputs.get(0).getName());
-        assertEquals("in_2", inputs.get(1).getName());
+        assertEquals("In_1", inputs.get(0).getName());
+        assertEquals("In_2", inputs.get(1).getName());
         ArrayList<Signal> outputs = model.getOutputs();
         assertEquals(1, outputs.size());
         assertEquals("Y", outputs.get(0).getName());

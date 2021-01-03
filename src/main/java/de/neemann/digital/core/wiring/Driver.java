@@ -14,6 +14,7 @@ import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.stats.Countable;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.element.PinInfo.input;
 
@@ -31,6 +32,7 @@ public class Driver extends Node implements Element, Countable {
             .addAttribute(Keys.ROTATE)
             .addAttribute(Keys.BITS)
             .addAttribute(Keys.FLIP_SEL_POSITON)
+            .setInsightFactory(new InsightSimple("Driver.dig"))
             .supportsHDL();
 
     private final ObservableValue output;

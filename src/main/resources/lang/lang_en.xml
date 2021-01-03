@@ -21,7 +21,7 @@
     <string name="attr_dialogBinary">Binary</string>
     <string name="attr_panel_primary">Basic</string>
     <string name="attr_panel_secondary">Advanced</string>
-    <string name="attr_lookInsideLabel">Look inside</string>
+    <string name="attr_lookInsideLabel">Inside</string>
     <string name="attr_lookInside_tt">Shows the internal structure of this component.</string>
     <string name="insightNotAvailable">Inside view not available.</string>
 

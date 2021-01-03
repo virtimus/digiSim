@@ -21,7 +21,7 @@
     <string name="attr_dialogBinary">Binär</string>
     <string name="attr_panel_primary">Allgemein</string>
     <string name="attr_panel_secondary">Erweitert</string>
-    <string name="attr_lookInsideLabel">Innerer Aufbau</string>
+    <string name="attr_lookInsideLabel">Aufbau</string>
     <string name="attr_lookInside_tt">Zeigt den inneren Aufbau dieses Bausteins.</string>
     <string name="insightNotAvailable">Innenansicht nicht verfügbar.</string>
 

@@ -8,6 +8,7 @@ package de.neemann.digital.core.wiring;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.element.PinInfo.input;
 
@@ -25,6 +26,7 @@ public class DriverInvSel extends Driver {
             .addAttribute(Keys.ROTATE)
             .addAttribute(Keys.BITS)
             .addAttribute(Keys.FLIP_SEL_POSITON)
+            .setInsightFactory(new InsightSimple("DriverInv.dig"))
             .supportsHDL();
 
     /**

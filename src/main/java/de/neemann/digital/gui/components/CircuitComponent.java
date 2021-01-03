@@ -1163,7 +1163,7 @@ public class CircuitComponent extends JComponent implements ChangedListener, Lib
                 } else {
                     InsightFactory insightFactory = elementType.getInsightFactory();
                     if (insightFactory != null) {
-                        attributeDialog.addButton(Lang.get("attr_lookInsideLabel"), new ToolTipAction(Lang.get("attr_openCircuit")) {
+                        attributeDialog.addButton(new ToolTipAction(Lang.get("attr_lookInsideLabel")) {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 Circuit circuit = insightFactory.createInsight(element, library);

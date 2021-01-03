@@ -1,4 +1,9 @@
-package de.neemann.digital.core.basic;
+/*
+ * Copyright (c) 2021 Helmut Neemann.
+ * Use of this source code is governed by the GPL v3 license
+ * that can be found in the LICENSE file.
+ */
+package de.neemann.digital.insight;
 
 import de.neemann.digital.analyse.AnalyseException;
 import de.neemann.digital.analyse.ModelAnalyser;
@@ -8,40 +13,37 @@ import de.neemann.digital.core.BacktrackException;
 import de.neemann.digital.core.Model;
 import de.neemann.digital.core.NodeException;
 import de.neemann.digital.core.Signal;
-import de.neemann.digital.core.element.Keys;
-import de.neemann.digital.core.io.In;
 import de.neemann.digital.draw.elements.Circuit;
 import de.neemann.digital.draw.elements.PinException;
-import de.neemann.digital.draw.elements.VisualElement;
 import de.neemann.digital.draw.library.ElementLibrary;
 import de.neemann.digital.draw.library.ElementNotFoundException;
 import de.neemann.digital.draw.model.ModelCreator;
 import de.neemann.digital.draw.shapes.ShapeFactory;
+import de.neemann.digital.insight.InsightTwoInputGate;
 import de.neemann.digital.integration.Resources;
 import de.neemann.digital.testing.TestCaseElement;
 import junit.framework.TestCase;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class AnalyzerInsightTest extends TestCase {
+public class InsightTwoInputGateTest extends TestCase {
 
-
-    public static void main(String[] args) throws Exception {
-        AnalyzerInsight.NameEntry[] list = new AnalyzerInsight.NameEntry[16];
+    public void testValidity() throws Exception {
+        InsightTwoInputGate.NameEntry[] list = new InsightTwoInputGate.NameEntry[16];
 
         ElementLibrary lib = new ElementLibrary();
         ShapeFactory sf = new ShapeFactory(lib);
-        File circuits = new File(Resources.getRoot(), "../../main/resources/insight/simple");
+        File circuits = new File(Resources.getRoot(), "../../main/resources/insight/twoInputs");
         for (File f : circuits.listFiles()) {
             Circuit c = Circuit.loadCircuit(f, sf);
             int index = createTable(lib, c);
 
-            list[index] = new AnalyzerInsight.NameEntry(f.getName(), false);
+            list[index] = new InsightTwoInputGate.NameEntry(f.getName(), false);
             int center = (index >> 1) & 3;
             if (!(center == 0 || center == 3))
-                list[index ^ 6] = new AnalyzerInsight.NameEntry(f.getName(), true);
+                list[index ^ 6] = new InsightTwoInputGate.NameEntry(f.getName(), true);
         }
 
         for (int i = 0; i < 16; i++) {

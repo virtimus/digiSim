@@ -7,10 +7,10 @@ package de.neemann.digital.core.memory;
 
 import de.neemann.digital.analyse.SubstituteLibrary;
 import de.neemann.digital.core.*;
-import de.neemann.digital.core.element.*;
-import de.neemann.digital.draw.elements.Circuit;
-import de.neemann.digital.draw.library.ElementLibrary;
-import de.neemann.digital.draw.library.ElementNotFoundException;
+import de.neemann.digital.core.element.Element;
+import de.neemann.digital.core.element.ElementAttributes;
+import de.neemann.digital.core.element.ElementTypeDescription;
+import de.neemann.digital.core.element.Keys;
 
 import static de.neemann.digital.core.ObservableValues.ovs;
 import static de.neemann.digital.core.element.PinInfo.input;

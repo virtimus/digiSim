@@ -10,6 +10,7 @@ import de.neemann.digital.core.ObservableValue;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.insight.InsightTwoInputGate;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class NAnd extends And {
      * The NAnd description
      */
     public static final ElementTypeDescription DESCRIPTION = new FanInDescription(NAnd.class)
-            .setInsightFactory(AnalyzerInsight.INSTANCE)
+            .setInsightFactory(InsightTwoInputGate.INSTANCE)
             .addAttribute(Keys.WIDE_SHAPE);
 
     /**

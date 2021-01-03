@@ -10,6 +10,7 @@ import de.neemann.digital.core.ObservableValue;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.insight.InsightTwoInputGate;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class XNOr extends XOr {
      * The XNOr description
      */
     public static final ElementTypeDescription DESCRIPTION = new FanInDescription(XNOr.class)
-            .setInsightFactory(AnalyzerInsight.INSTANCE)
+            .setInsightFactory(InsightTwoInputGate.INSTANCE)
             .addAttribute(Keys.WIDE_SHAPE);
 
     /**

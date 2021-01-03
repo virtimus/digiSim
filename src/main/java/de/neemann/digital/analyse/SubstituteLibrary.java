@@ -13,6 +13,7 @@ import de.neemann.digital.draw.library.ElementLibrary;
 import de.neemann.digital.draw.library.ElementNotFoundException;
 import de.neemann.digital.draw.library.LibraryInterface;
 import de.neemann.digital.hdl.hgs.*;
+import de.neemann.digital.insight.InsightFactory;
 import de.neemann.digital.lang.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,12 @@ public class SubstituteLibrary implements LibraryInterface {
         this.parent = parent;
     }
 
+    /**
+     * Creates an insightfactory using a replacement circuit
+     *
+     * @param clazz the class of the component
+     * @return the insight factory
+     */
     public static InsightFactory createInsightFactory(Class<? extends Element> clazz) {
         return (ve, library) -> {
             try {

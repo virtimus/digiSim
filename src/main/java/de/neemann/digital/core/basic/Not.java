@@ -14,6 +14,7 @@ import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.stats.Countable;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.element.PinInfo.input;
 
@@ -29,6 +30,7 @@ public class Not extends Node implements Element, Countable {
             .addAttribute(Keys.ROTATE)
             .addAttribute(Keys.WIDE_SHAPE)
             .addAttribute(Keys.BITS)
+            .setInsightFactory(new InsightSimple().add("inverter.dig", InsightSimple.ONEBIT))
             .supportsHDL();
 
     private final ObservableValue output;

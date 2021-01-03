@@ -3,7 +3,7 @@
  * Use of this source code is governed by the GPL v3 license
  * that can be found in the LICENSE file.
  */
-package de.neemann.digital.core.basic;
+package de.neemann.digital.insight;
 
 import de.neemann.digital.core.*;
 import de.neemann.digital.core.element.*;
@@ -19,8 +19,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public final class AnalyzerInsight implements InsightFactory {
-    public static final InsightFactory INSTANCE = new AnalyzerInsight();
+/**
+ * Insight factory used to create insights for two input combinatorial gates.
+ */
+public final class InsightTwoInputGate implements InsightFactory {
+    /**
+     * The instance to use
+     */
+    public static final InsightFactory INSTANCE = new InsightTwoInputGate();
+
     private static final NameEntry[] NAMES = new NameEntry[]{
             null,
             new NameEntry("ins5.dig", false),
@@ -40,7 +47,7 @@ public final class AnalyzerInsight implements InsightFactory {
             null,
     };
 
-    private AnalyzerInsight() {
+    private InsightTwoInputGate() {
     }
 
     @Override
@@ -90,7 +97,7 @@ public final class AnalyzerInsight implements InsightFactory {
             if (ne == null)
                 return null;
 
-            InputStream in = ClassLoader.getSystemResourceAsStream("insight/simple/" + ne.getName());
+            InputStream in = ClassLoader.getSystemResourceAsStream("insight/twoInputs/" + ne.getName());
             Circuit circuit = Circuit.loadCircuit(in, library.getShapeFactory());
 
             if (ne.getSwapInputs())

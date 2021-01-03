@@ -7,6 +7,7 @@ package de.neemann.digital.core.element;
 
 import de.neemann.digital.core.NodeException;
 import de.neemann.digital.draw.elements.PinException;
+import de.neemann.digital.insight.InsightFactory;
 import de.neemann.digital.lang.Lang;
 
 import java.lang.reflect.Constructor;
@@ -169,11 +170,20 @@ public class ElementTypeDescription {
         return this;
     }
 
+    /**
+     * Sets a insight factory
+     *
+     * @param insightFactory the insight factory
+     * @return this for chained calls
+     */
     public ElementTypeDescription setInsightFactory(InsightFactory insightFactory) {
         this.insightFactory = insightFactory;
         return this;
     }
 
+    /**
+     * @return the insight factory
+     */
     public InsightFactory getInsightFactory() {
         return insightFactory;
     }

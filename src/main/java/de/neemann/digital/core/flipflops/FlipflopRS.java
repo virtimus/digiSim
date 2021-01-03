@@ -12,6 +12,7 @@ import de.neemann.digital.core.ObservableValues;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.element.PinInfo.input;
 
@@ -30,7 +31,8 @@ public class FlipflopRS extends FlipflopBit {
             .addAttribute(Keys.LABEL)
             .addAttribute(Keys.DEFAULT)
             .addAttribute(Keys.INVERTER_CONFIG)
-            .addAttribute(Keys.VALUE_IS_PROBE);
+            .addAttribute(Keys.VALUE_IS_PROBE)
+            .setInsightFactory(new InsightSimple("RS-ff.dig"));
 
 
     private ObservableValue sVal;

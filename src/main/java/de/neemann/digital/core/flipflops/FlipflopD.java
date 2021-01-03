@@ -11,6 +11,7 @@ import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.stats.Countable;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.ObservableValues.ovs;
 import static de.neemann.digital.core.element.PinInfo.input;
@@ -32,6 +33,7 @@ public class FlipflopD extends Node implements Element, Countable {
             .addAttribute(Keys.DEFAULT)
             .addAttribute(Keys.INVERTER_CONFIG)
             .addAttribute(Keys.VALUE_IS_PROBE)
+            .setInsightFactory(new InsightSimple().add("D-ff.dig", InsightSimple.ONEBIT))
             .supportsHDL();
 
     private final int bits;

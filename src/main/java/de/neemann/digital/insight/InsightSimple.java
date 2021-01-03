@@ -5,13 +5,24 @@
  */
 package de.neemann.digital.insight;
 
+import de.neemann.digital.core.basic.Not;
+import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.core.io.In;
+import de.neemann.digital.core.wiring.Clock;
 import de.neemann.digital.draw.elements.Circuit;
 import de.neemann.digital.draw.elements.VisualElement;
+import de.neemann.digital.draw.elements.Wire;
+import de.neemann.digital.draw.graphics.Vector;
 import de.neemann.digital.draw.library.ElementLibrary;
+import de.neemann.digital.draw.model.InverterConfig;
+import de.neemann.digital.draw.shapes.ShapeFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
+
+import static de.neemann.digital.draw.shapes.GenericShape.SIZE;
 
 /**
  * A insight factory which uses a simple file to create an insight.
@@ -39,12 +50,24 @@ public class InsightSimple implements InsightFactory {
     }
 
     private final ArrayList<Entry> entries;
+    private boolean unconditional;
 
     /**
      * Creates a new instance
      */
     public InsightSimple() {
         entries = new ArrayList<>();
+        unconditional = false;
+    }
+
+    /**
+     * Creates a new instance with a unconditional circuit
+     *
+     * @param name unconditional circuit
+     */
+    public InsightSimple(String name) {
+        this();
+        add(name);
     }
 
     /**
@@ -55,8 +78,22 @@ public class InsightSimple implements InsightFactory {
      * @return this for chained calls
      */
     public InsightSimple add(String name, Condition condition) {
+        if (unconditional)
+            throw new RuntimeException("there is already a unconditional circuit");
         entries.add(new Entry(name, condition));
+        if (condition == null)
+            unconditional = true;
         return this;
+    }
+
+    /**
+     * Adds a unconditional circuit
+     *
+     * @param name the name of the circuit
+     * @return this for chained calls
+     */
+    public InsightSimple add(String name) {
+        return add(name, null);
     }
 
     @Override
@@ -65,13 +102,33 @@ public class InsightSimple implements InsightFactory {
             if (entry.isMet(ve)) {
                 InputStream in = ClassLoader.getSystemResourceAsStream("insight/simple/" + entry.name);
                 try {
-                    return Circuit.loadCircuit(in, library.getShapeFactory());
+                    return invertInputs(Circuit.loadCircuit(in, library.getShapeFactory()), ve.getElementAttributes().get(Keys.INVERTER_CONFIG), library.getShapeFactory());
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
             }
         return null;
+    }
+
+    private Circuit invertInputs(Circuit circuit, InverterConfig ic, ShapeFactory shapeFactory) {
+        List<VisualElement> list = circuit.getElements(v -> v.equalsDescription(In.DESCRIPTION) || v.equalsDescription(Clock.DESCRIPTION));
+        for (VisualElement in : list) {
+            String label = in.getElementAttributes().getLabel();
+            if (ic.contains(label))
+                addInverter(in, circuit, shapeFactory);
+        }
+        return circuit;
+    }
+
+    private void addInverter(VisualElement in, Circuit circuit, ShapeFactory shapeFactory) {
+        Vector pos = in.getPos();
+        in.setPos(new Vector(pos.x - SIZE * 3, pos.y));
+        circuit.add(new VisualElement(Not.DESCRIPTION.getName())
+                .setAttribute(Keys.BITS, in.getElementAttributes().getBits())
+                .setPos(new Vector(pos.x - SIZE * 2, pos.y))
+                .setShapeFactory(shapeFactory));
+        circuit.add(new Wire(new Vector(pos.x - SIZE * 3, pos.y), new Vector(pos.x - SIZE * 2, pos.y)));
     }
 
     /**
@@ -97,7 +154,10 @@ public class InsightSimple implements InsightFactory {
         }
 
         public boolean isMet(VisualElement ve) {
-            return condition.isMet(ve);
+            if (condition == null)
+                return true;
+            else
+                return condition.isMet(ve);
         }
     }
 }

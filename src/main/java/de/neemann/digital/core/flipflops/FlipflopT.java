@@ -13,6 +13,7 @@ import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
 import de.neemann.digital.core.element.PinDescriptions;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.element.PinInfo.input;
 
@@ -40,7 +41,9 @@ public class FlipflopT extends FlipflopBit {
             .addAttribute(Keys.WITH_ENABLE)
             .addAttribute(Keys.DEFAULT)
             .addAttribute(Keys.INVERTER_CONFIG)
-            .addAttribute(Keys.VALUE_IS_PROBE);
+            .addAttribute(Keys.VALUE_IS_PROBE)
+            .setInsightFactory(new InsightSimple().add("T-ff-en.dig", ve -> ve.getElementAttributes().get(Keys.WITH_ENABLE))
+                    .add("T-ff.dig", ve -> !ve.getElementAttributes().get(Keys.WITH_ENABLE)));
 
     private final boolean isEnable;
 

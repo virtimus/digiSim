@@ -12,6 +12,7 @@ import de.neemann.digital.core.ObservableValues;
 import de.neemann.digital.core.element.ElementAttributes;
 import de.neemann.digital.core.element.ElementTypeDescription;
 import de.neemann.digital.core.element.Keys;
+import de.neemann.digital.insight.InsightSimple;
 
 import static de.neemann.digital.core.element.PinInfo.input;
 
@@ -31,6 +32,7 @@ public class FlipflopJK extends FlipflopBit {
             .addAttribute(Keys.DEFAULT)
             .addAttribute(Keys.INVERTER_CONFIG)
             .addAttribute(Keys.VALUE_IS_PROBE)
+            .setInsightFactory(new InsightSimple("JK-ff.dig"))
             .supportsHDL();
 
     private ObservableValue jVal;

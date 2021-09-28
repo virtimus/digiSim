@@ -1271,7 +1271,7 @@ public class CircuitComponent extends JComponent implements ChangedListener, Lib
                     && el.equalsDescription(Tunnel.DESCRIPTION)
                     && el.getElementAttributes().get(Keys.NETNAME).equals(oldName));
 
-            if (others.size() > 0) {
+           /* if (others.size() > 0) {
                 String newName = modified.get(Keys.NETNAME);
                 if (Settings.getInstance().get(Keys.SETTINGS_SHOW_TUNNEL_RENAME_DIALOG)) {
                     int res = JOptionPane.showConfirmDialog(this,
@@ -1286,7 +1286,7 @@ public class CircuitComponent extends JComponent implements ChangedListener, Lib
                         return b.build();
                     }
                 }
-            }
+            }*/
         }
         return mod;
     }
